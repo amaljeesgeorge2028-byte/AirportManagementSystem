@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airport Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>✈ Airport Management System</h1>
+        <p>Flight Operations Dashboard</p>
+    </header>
+
+    <nav>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#flights">Flight Management</a>
+        <a href="#schedule">Flight Schedule</a>
+    </nav>
+
+    <main>
+        <section id="dashboard">
+            <h2>Dashboard</h2>
+
+            <div class="dashboard-cards">
+                <div class="card">
+                    <h3>Total Flights</h3>
+                    <p id="totalFlights">3</p>
+                </div>
+
+                <div class="card">
+                    <h3>Scheduled</h3>
+                    <p id="scheduledFlights">2</p>
+                </div>
+
+                <div class="card">
+                    <h3>Departed</h3>
+                    <p id="departedFlights">1</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="flights">
+            <h2>Flight Management</h2>
+
+            <form id="flightForm">
+                <input type="text" id="flightNumber"
+                    placeholder="Flight Number (e.g. AI101)" required>
+
+                <input type="text" id="destination"
+                    placeholder="Destination" required>
+
+                <input type="time" id="departureTime" required>
+
+                <select id="status">
+                    <option value="Scheduled">Scheduled</option>
+                    <option value="Departed">Departed</option>
+                    <option value="Delayed">Delayed</option>
+                </select>
+
+                <button type="submit">Add Flight</button>
+            </form>
+        </section>
+
+        <section id="schedule">
+            <h2>Flight Schedule</h2>
+
+            <input type="text" id="searchFlight"
+                placeholder="Search by flight number or destination">
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Flight Number</th>
+                            <th>Destination</th>
+                            <th>Departure</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="flightTable"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Airport Management System | Docker and Kubernetes Project</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
