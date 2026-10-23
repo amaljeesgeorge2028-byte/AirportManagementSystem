@@ -1,5 +1,3 @@
-
-```javascript
 let flights = JSON.parse(localStorage.getItem("flights")) || [
     {
         number: "AI101",
