@@ -1,5 +1,6 @@
 
-let flights = [
+```javascript
+let flights = JSON.parse(localStorage.getItem("flights")) || [
     {
         number: "AI101",
         destination: "Delhi",
@@ -24,6 +25,12 @@ const flightForm = document.getElementById("flightForm");
 const flightTable = document.getElementById("flightTable");
 const searchFlight = document.getElementById("searchFlight");
 
+// Save flights in the browser
+function saveFlights() {
+    localStorage.setItem("flights", JSON.stringify(flights));
+}
+
+// Display flights in the table
 function displayFlights() {
     flightTable.innerHTML = "";
 
@@ -56,6 +63,7 @@ function displayFlights() {
     updateDashboard();
 }
 
+// Update dashboard counts
 function updateDashboard() {
     document.getElementById("totalFlights").textContent = flights.length;
 
@@ -70,6 +78,7 @@ function updateDashboard() {
         }).length;
 }
 
+// Add a new flight
 flightForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
@@ -94,18 +103,29 @@ flightForm.addEventListener("submit", function(event) {
         status: status
     });
 
+    saveFlights();
     flightForm.reset();
     displayFlights();
 
     alert("Flight added successfully!");
 });
 
+// Delete a flight
 function deleteFlight(number) {
     flights = flights.filter(function(flight) {
         return flight.number !== number;
     });
 
+    saveFlights();
     displayFlights();
+}
+
+// Search flights
+searchFlight.addEventListener("input", displayFlights);
+
+// Display saved flights when the page opens
+displayFlights();
+```
 }
 
 searchFlight.addEventListener("input", displayFlights);
