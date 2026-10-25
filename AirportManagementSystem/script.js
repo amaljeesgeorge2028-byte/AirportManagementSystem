@@ -1,34 +1,44 @@
-let flights = JSON.parse(localStorage.getItem("flights")) || [
-    {
-        number: "AI101",
-        destination: "Delhi",
-        time: "09:00",
-        status: "Scheduled"
-    },
-    {
-        number: "6E202",
-        destination: "Mumbai",
-        time: "11:30",
-        status: "Scheduled"
-    },
-    {
-        number: "IX303",
-        destination: "Dubai",
-        time: "14:00",
-        status: "Departed"
-    }
-];
+
+let flights;
+
+try {
+    const savedFlights = localStorage.getItem("flights");
+    flights = savedFlights ? JSON.parse(savedFlights) : null;
+} catch (error) {
+    flights = null;
+}
+
+if (!Array.isArray(flights)) {
+    flights = [
+        {
+            number: "AI101",
+            destination: "Delhi",
+            time: "09:00",
+            status: "Scheduled"
+        },
+        {
+            number: "6E202",
+            destination: "Mumbai",
+            time: "11:30",
+            status: "Scheduled"
+        },
+        {
+            number: "IX303",
+            destination: "Dubai",
+            time: "14:00",
+            status: "Departed"
+        }
+    ];
+}
 
 const flightForm = document.getElementById("flightForm");
 const flightTable = document.getElementById("flightTable");
 const searchFlight = document.getElementById("searchFlight");
 
-// Save flights in the browser
 function saveFlights() {
     localStorage.setItem("flights", JSON.stringify(flights));
 }
 
-// Display flights in the table
 function displayFlights() {
     flightTable.innerHTML = "";
 
@@ -42,18 +52,35 @@ function displayFlights() {
     filteredFlights.forEach(function(flight) {
         const row = document.createElement("tr");
 
-        row.innerHTML = `
-            <td>${flight.number}</td>
-            <td>${flight.destination}</td>
-            <td>${flight.time}</td>
-            <td>${flight.status}</td>
-            <td>
-                <button class="delete-btn"
-                    onclick="deleteFlight('${flight.number}')">
-                    Delete
-                </button>
-            </td>
-        `;
+        const numberCell = document.createElement("td");
+        numberCell.textContent = flight.number;
+
+        const destinationCell = document.createElement("td");
+        destinationCell.textContent = flight.destination;
+
+        const timeCell = document.createElement("td");
+        timeCell.textContent = flight.time;
+
+        const statusCell = document.createElement("td");
+        statusCell.textContent = flight.status;
+
+        const actionCell = document.createElement("td");
+        const deleteButton = document.createElement("button");
+
+        deleteButton.textContent = "Delete";
+        deleteButton.className = "delete-btn";
+        deleteButton.addEventListener("click", function() {
+            deleteFlight(flight.number);
+        });
+
+        actionCell.appendChild(deleteButton);
+        row.append(
+            numberCell,
+            destinationCell,
+            timeCell,
+            statusCell,
+            actionCell
+        );
 
         flightTable.appendChild(row);
     });
@@ -61,7 +88,6 @@ function displayFlights() {
     updateDashboard();
 }
 
-// Update dashboard counts
 function updateDashboard() {
     document.getElementById("totalFlights").textContent = flights.length;
 
@@ -76,7 +102,6 @@ function updateDashboard() {
         }).length;
 }
 
-// Add a new flight
 flightForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
@@ -86,6 +111,11 @@ flightForm.addEventListener("submit", function(event) {
     const destination = document.getElementById("destination").value.trim();
     const time = document.getElementById("departureTime").value;
     const status = document.getElementById("status").value;
+
+    if (!number || !destination || !time || !status) {
+        alert("Please fill in all flight details.");
+        return;
+    }
 
     if (flights.some(function(flight) {
         return flight.number.toLowerCase() === number.toLowerCase();
@@ -108,7 +138,6 @@ flightForm.addEventListener("submit", function(event) {
     alert("Flight added successfully!");
 });
 
-// Delete a flight
 function deleteFlight(number) {
     flights = flights.filter(function(flight) {
         return flight.number !== number;
@@ -118,14 +147,7 @@ function deleteFlight(number) {
     displayFlights();
 }
 
-// Search flights
-searchFlight.addEventListener("input", displayFlights);
-
-// Display saved flights when the page opens
-displayFlights();
-```
-}
-
 searchFlight.addEventListener("input", displayFlights);
 
 displayFlights();
+
